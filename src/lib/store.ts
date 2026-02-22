@@ -22,6 +22,8 @@ export interface BabyTransform {
     rotation: number;
 }
 
+export type EditorTab = "move" | "adjust" | "filters";
+
 export interface EditorState {
     selectedTheme: Theme | null;
     setSelectedTheme: (theme: Theme) => void;
@@ -52,8 +54,8 @@ export interface EditorState {
     maskBrushSize: number;
     setMaskBrushSize: (size: number) => void;
 
-    activeTab: "move" | "adjust" | "mask" | "filters";
-    setActiveTab: (tab: "move" | "adjust" | "mask" | "filters") => void;
+    activeTab: EditorTab;
+    setActiveTab: (tab: EditorTab) => void;
 
     isProcessing: boolean;
     processingMessage: string;

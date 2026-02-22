@@ -74,11 +74,13 @@ export async function renderToCanvas(config: RenderConfig): Promise<string> {
     const babyImg = await loadImage(babyImageUrl);
 
     let maskedBaby: HTMLCanvasElement | HTMLImageElement = babyImg;
+    // 🚨 PHASE 3 MOBILE MEMORY OPTIMIZATION: 
+    // Masking math is disabled in export to prevent iOS Safari memory termination.
+    /*
     if (maskStrokes.length > 0) {
-        // Pass original baby dimensions to applyMaskToImage to maintain quality
-        // native mask strokes will composite perfectly at 1:1 scale
         maskedBaby = applyMaskToImage(babyImg, maskStrokes);
     }
+    */
 
     const filteredBaby = applyFiltersToCanvas(maskedBaby, adjustValues);
 
@@ -86,9 +88,9 @@ export async function renderToCanvas(config: RenderConfig): Promise<string> {
     if (theme.shadow.enabled) {
         const shadowOffset = calculateShadowOffset(theme.shadow);
 
-        // Do not multiply blur by upscale! ctx.filter is affected by ctx.scale().
-        // If we multiply here, the blur gets squared relative to the upscale factor.
-        const scaledBlur = theme.shadow.blur;
+        // 🚨 PHASE 3 MOBILE MEMORY OPTIMIZATION:
+        // As explicitly requested, use only upscale for blur and offset. Do not use scaleFactor.
+        const scaledBlur = theme.shadow.blur * upscale;
         const scaledOffsetX = shadowOffset.offsetX * upscale;
         const scaledOffsetY = shadowOffset.offsetY * upscale;
 

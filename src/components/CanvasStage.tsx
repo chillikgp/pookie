@@ -132,13 +132,16 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
         node.filters(filters);
 
         // Cache is REQUIRED for Konva filters to render. 
-        // ⚠️ Mobile iOS Safari crashes if caching massive 12MP images at devicePixelRatio.
-        // Cap the cache pixel ratio so the bounding box never exceeds ~1200px equivalent resolution.
+        // 🚨 PHASE 3 MOBILE MEMORY OPTIMIZATION: 
+        // Only trigger the heavy cache generation if the user actually moved a slider. 
+        // Always force pixelRatio: 1 to prevent Safari from exploding on rotation.
         try {
-            const maxRes = 1200;
-            const largestDim = Math.max(babyImage ? babyImage.naturalWidth : 1, babyImage ? babyImage.naturalHeight : 1);
-            const safeRatio = Math.min(1, maxRes / largestDim);
-            node.cache({ pixelRatio: safeRatio });
+            const hasActiveFilters = adjustValues.brightness !== 0 || adjustValues.contrast !== 0 || adjustValues.vibrance !== 0;
+            if (hasActiveFilters) {
+                node.cache({ pixelRatio: 1 });
+            } else {
+                node.clearCache();
+            }
         } catch { /* not yet rendered */ }
         node.getLayer()?.batchDraw();
     }, [adjustValues, babyImage, maskedBabyCanvas]);
@@ -257,13 +260,11 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
         // Required for Konva filters to apply visually to a node without clipping
         node.clearCache();
         try {
-            // ⚠️ Mobile crash prevention: Never use pixelRatio=2 on large image silhouettes!
-            const maxRes = 1000;
-            const largestDim = Math.max(babyImage ? babyImage.naturalWidth : 1, babyImage ? babyImage.naturalHeight : 1);
-            const safeRatio = Math.min(1, maxRes / largestDim);
-
+            // 🚨 PHASE 3 MOBILE MEMORY OPTIMIZATION: 
+            // Shadow requires caching to blur, but we MUST force pixelRatio 1.
+            // Do not upscale the shadow canvas to devicePixelRatio.
             node.cache({
-                pixelRatio: safeRatio,
+                pixelRatio: 1,
                 offset: Math.ceil(theme.shadow.blur)
             });
         } catch { /* not yet rendered */ }
@@ -283,7 +284,7 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
     useEffect(() => {
         const container = stageRef.current?.container();
         if (!container) return;
-        container.style.cursor = activeTab === "mask" ? "none" : "default";
+        container.style.cursor = (activeTab as string) === "mask" ? "none" : "default";
     }, [activeTab]);
 
     // ─── DRAG handler ──────────────────────────────────────────────
@@ -311,7 +312,7 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
 
     const handleMaskPointerDown = useCallback(
         (e: Konva.KonvaEventObject<MouseEvent | TouchEvent>) => {
-            if (activeTab !== "mask") return;
+            if ((activeTab as string) !== "mask") return;
             setIsDrawing(true);
             const pos = e.target.getStage()?.getPointerPosition();
             if (pos) {
@@ -325,7 +326,7 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
     const handleMaskPointerMove = useCallback(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (e: any) => {
-            if (!isDrawing || activeTab !== "mask") return;
+            if (!isDrawing || (activeTab as string) !== "mask") return;
             const pos = e.target.getStage()?.getPointerPosition();
             if (!pos) return;
 
@@ -347,7 +348,7 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
     );
 
     const handleMaskPointerUp = useCallback(() => {
-        if (!isDrawing || activeTab !== "mask") return;
+        if (!isDrawing || (activeTab as string) !== "mask") return;
         setIsDrawing(false);
         if (currentStrokePoints.length > 0) {
             // Save native brush size instead of stage brush size
@@ -421,7 +422,7 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
                                 scaleX={babyTransform.scaleX}
                                 scaleY={babyTransform.scaleY}
                                 rotation={babyTransform.rotation}
-                                draggable={activeTab !== "mask"}
+                                draggable={(activeTab as string) !== "mask"}
                                 onDragEnd={handleBabyDragEnd}
                                 onTransformEnd={handleBabyTransformEnd}
                             />
@@ -455,7 +456,7 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
                 </Layer>
 
                 {/* Brush cursor and Live Drawing (mask mode only) */}
-                {activeTab === "mask" && (
+                {(activeTab as string) === "mask" && (
                     <Layer>
                         {/* 
                             Project the native local points back to screen space for the live preview line.

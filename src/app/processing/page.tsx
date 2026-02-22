@@ -84,8 +84,37 @@ function ProcessingContent() {
                 }
 
                 setProgress(100);
+                setStatus("Optimizing size...");
+
+                // 🚨 PHASE 3 MOBILE MEMORY OPTIMIZATION: 
+                // Downscale for preview performance to guarantee iOS Safari doesn't crash on rotation.
+                // The export pipeline max is 2048, but the preview only needs a fraction of that visually.
+                const MAX_PREVIEW_DIMENSION = 1200;
+                const finalUrl = await new Promise<string>((resolve) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        if (img.width <= MAX_PREVIEW_DIMENSION && img.height <= MAX_PREVIEW_DIMENSION) {
+                            resolve(result.imageUrl as string);
+                            return;
+                        }
+                        const scale = MAX_PREVIEW_DIMENSION / Math.max(img.width, img.height);
+                        const canvas = document.createElement("canvas");
+                        canvas.width = img.width * scale;
+                        canvas.height = img.height * scale;
+                        const ctx = canvas.getContext("2d");
+                        if (ctx) {
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                            resolve(canvas.toDataURL("image/png"));
+                        } else {
+                            resolve(result.imageUrl as string); // fallback
+                        }
+                    };
+                    img.onerror = () => resolve(result.imageUrl as string);
+                    img.src = result.imageUrl as string;
+                });
+
                 setStatus("Done!");
-                setProcessedBabyImageUrl(result.imageUrl);
+                setProcessedBabyImageUrl(finalUrl);
                 setProcessing(false);
 
                 // Brief pause to show completion

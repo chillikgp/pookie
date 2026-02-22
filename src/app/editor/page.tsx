@@ -24,7 +24,6 @@ const CanvasStage = dynamic(() => import("@/components/CanvasStage"), {
 // Dynamically import tool panels
 const MoveTools = dynamic(() => import("@/components/EditorTools/MoveTools"), { ssr: false });
 const AdjustTools = dynamic(() => import("@/components/EditorTools/AdjustTools"), { ssr: false });
-const MaskTools = dynamic(() => import("@/components/EditorTools/MaskTools"), { ssr: false });
 const FilterTools = dynamic(() => import("@/components/EditorTools/FilterTools"), { ssr: false });
 
 function EditorContent() {
@@ -88,8 +87,6 @@ function EditorContent() {
                 return <MoveTools />;
             case "adjust":
                 return <AdjustTools />;
-            case "mask":
-                return <MaskTools />;
             case "filters":
                 return <FilterTools />;
             default:
