@@ -23,6 +23,7 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
         maskMode,
         maskBrushSize,
         setEditorStageWidth,
+        addMaskStroke,
     } = useEditorStore();
 
     const stageRef = useRef<Konva.Stage>(null);
