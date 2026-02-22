@@ -64,23 +64,40 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
     // ─── Load theme layers ─────────────────────────────────────────
     useEffect(() => {
         if (!theme) return;
+
+        let isHovered = true; // prevent racing unmounts
+
         const loadLayers = async () => {
-            const loaded = new Map<string, HTMLImageElement>();
-            for (const layer of theme.layers) {
-                try {
-                    const img = new window.Image();
-                    img.crossOrigin = "anonymous";
-                    await new Promise<void>((resolve, reject) => {
-                        img.onload = () => resolve();
-                        img.onerror = () => reject();
+            try {
+                const layerPromises = theme.layers.map(async (layer) => {
+                    return new Promise<{ url: string; img: HTMLImageElement }>((resolve, reject) => {
+                        const img = new window.Image();
+                        img.crossOrigin = "anonymous";
+                        img.onload = () => resolve({ url: layer.url, img });
+                        img.onerror = () => reject(new Error(`Failed to load layer: ${layer.url}`));
                         img.src = layer.url;
                     });
-                    loaded.set(layer.url, img);
-                } catch { /* skip */ }
+                });
+
+                const loadedArray = await Promise.all(layerPromises);
+
+                if (isHovered) {
+                    const loadedMap = new Map<string, HTMLImageElement>();
+                    for (const item of loadedArray) {
+                        loadedMap.set(item.url, item.img);
+                    }
+                    setLayerImages(loadedMap);
+                }
+            } catch (err) {
+                console.error("Failed to load theme layers:", err);
             }
-            setLayerImages(loaded);
         };
+
         loadLayers();
+
+        return () => {
+            isHovered = false;
+        };
     }, [theme]);
 
     // ─── Auto-place baby ONCE ──────────────────────────────────────
@@ -370,6 +387,25 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
 
     const shadowOffset = theme.shadow.enabled ? calculateShadowOffset(theme.shadow) : null;
     const babyImageSource = maskedBabyCanvas || babyImage;
+
+    // 🚨 PHASE 4 IOS OPTIMIZATION: 
+    // Do not mount the Stage and allocate heavy canvas contexts until ALL images are physically decoded.
+    // Mounting a Konva stage with incomplete assets causes Rapid Repaints on mobile Safari, resulting in immediate VRAM exhaustion.
+    const isReady = babyImage !== null && layerImages.size === theme.layers.length;
+
+    if (!isReady) {
+        return (
+            <div className="flex flex-col items-center justify-center w-full min-h-[400px]">
+                <div className="relative w-16 h-16 mb-6">
+                    <div className="absolute inset-0 rounded-full bg-[var(--color-primary-soft)] loading-pulse" />
+                    <div className="absolute inset-0 flex items-center justify-center text-3xl">
+                        🎨
+                    </div>
+                </div>
+                <p className="text-sm text-gray-400 font-medium">Assembling layers...</p>
+            </div>
+        );
+    }
 
     return (
         <div className="relative">
