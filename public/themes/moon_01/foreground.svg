@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <!-- Foreground sparkles -->
+  <circle cx="100" cy="1400" r="3" fill="#c9b8e8" opacity="0.6"/>
+  <circle cx="300" cy="1500" r="2" fill="#c9b8e8" opacity="0.4"/>
+  <circle cx="1100" cy="1350" r="2.5" fill="#c9b8e8" opacity="0.5"/>
+  <circle cx="900" cy="1450" r="1.5" fill="#c9b8e8" opacity="0.3"/>
+</svg>

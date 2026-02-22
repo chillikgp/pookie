@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fce4ec"/>
+      <stop offset="100%" stop-color="#f8bbd0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#bg)"/>
+  <!-- Flower decorations -->
+  <circle cx="100" cy="100" r="60" fill="#f48fb1" opacity="0.3"/>
+  <circle cx="1100" cy="80" r="50" fill="#f48fb1" opacity="0.25"/>
+  <circle cx="200" cy="1400" r="70" fill="#f48fb1" opacity="0.2"/>
+  <circle cx="1000" cy="1350" r="55" fill="#f48fb1" opacity="0.3"/>
+</svg>

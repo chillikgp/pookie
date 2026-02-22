@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <!-- Moon -->
+  <circle cx="900" cy="250" r="120" fill="#f0e6d3" opacity="0.9"/>
+  <circle cx="870" cy="230" r="110" fill="#0a0a2e" opacity="0.3"/>
+  <!-- Clouds -->
+  <ellipse cx="300" cy="1200" rx="250" ry="80" fill="#1a1a4e" opacity="0.5"/>
+  <ellipse cx="800" cy="1300" rx="300" ry="100" fill="#1a1a4e" opacity="0.4"/>
+</svg>

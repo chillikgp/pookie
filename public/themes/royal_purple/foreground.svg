@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <!-- Crown/tiara decoration at top -->
+  <polygon points="540,40 560,10 580,30 600,5 620,30 640,10 660,40" fill="#ffd54f" opacity="0.3"/>
+  <!-- Bottom sparkles -->
+  <circle cx="100" cy="1550" r="3" fill="#ce93d8" opacity="0.5"/>
+  <circle cx="1100" cy="1520" r="2" fill="#ce93d8" opacity="0.4"/>
+</svg>

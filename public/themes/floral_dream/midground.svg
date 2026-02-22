@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <!-- Floral wreaths -->
+  <circle cx="600" cy="750" r="350" fill="none" stroke="#e91e63" stroke-width="2" opacity="0.15"/>
+  <circle cx="600" cy="750" r="380" fill="none" stroke="#f48fb1" stroke-width="1" opacity="0.1"/>
+  <!-- Petals -->
+  <ellipse cx="250" cy="300" rx="40" ry="20" fill="#f48fb1" opacity="0.2" transform="rotate(-30 250 300)"/>
+  <ellipse cx="950" cy="250" rx="35" ry="18" fill="#f48fb1" opacity="0.25" transform="rotate(45 950 250)"/>
+</svg>

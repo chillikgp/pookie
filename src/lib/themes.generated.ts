@@ -1,0 +1,531 @@
+// ⚠️ AUTO-GENERATED — Do not edit manually.
+// Run `npm run generate:themes` to regenerate.
+// Generated: 2026-02-22T19:02:33.847Z
+
+import { Theme } from "./theme/types";
+
+export const generatedThemes: Theme[] = [
+  {
+    id: "airlines",
+    name: "Airlines",
+    collection: "Travel",
+    version: 8,
+    width: 2816,
+    height: 1536,
+    babyPlacement: {
+      x: 59.5,
+      y: 31,
+      width: 31.5,
+      height: 72.5,
+      rotation: -14,
+      anchor: "center" as const,
+    },
+    babyZIndex: 1,
+    shadow: {
+      enabled: true,
+      angle: 40,
+      distance: 4,
+      blur: 26,
+      opacity: 0.17,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.07, contrast: 7, vibrance: 0.11, warmth: 0.36 },
+    layers: [
+      { url: "/themes/airlines/background.png", zIndex: 0 }
+    ],
+  },
+  {
+    id: "autowala",
+    name: "autowala",
+    collection: "outdoor",
+    version: 3,
+    width: 2304,
+    height: 1856,
+    babyPlacement: {
+      x: 38.5,
+      y: 29,
+      width: 25.5,
+      height: 41.5,
+      rotation: 0,
+      anchor: "center" as const,
+    },
+    babyZIndex: 2,
+    shadow: {
+      enabled: true,
+      angle: 300,
+      distance: 7,
+      blur: 30,
+      opacity: 0.18,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0, contrast: 0, vibrance: 0, warmth: 0 },
+    layers: [
+      { url: "/themes/autowala/background.png", zIndex: 0 },
+      { url: "/themes/autowala/foreground.png", zIndex: 2 }
+    ],
+  },
+  {
+    id: "bathtub",
+    name: "Bathtub",
+    collection: "Bath",
+    version: 4,
+    width: 640,
+    height: 640,
+    babyPlacement: {
+      x: 58,
+      y: 47,
+      width: 32,
+      height: 43,
+      rotation: 0,
+      anchor: "center" as const,
+    },
+    babyZIndex: 1,
+    shadow: {
+      enabled: true,
+      angle: 30,
+      distance: 5,
+      blur: 60,
+      opacity: 0.11,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.15, contrast: 0, vibrance: 0, warmth: -0.08 },
+    layers: [
+      { url: "/themes/bathtub/background.png", zIndex: 0 },
+      { url: "/themes/bathtub/foreground.png", zIndex: 2 }
+    ],
+  },
+  {
+    id: "boating",
+    name: "Boating",
+    collection: "Outdoor",
+    version: 3,
+    width: 640,
+    height: 640,
+    babyPlacement: {
+      x: 6.5,
+      y: 40,
+      width: 36.5,
+      height: 51.5,
+      rotation: 0,
+      anchor: "top" as const,
+    },
+    babyZIndex: 1,
+    shadow: {
+      enabled: true,
+      angle: 320,
+      distance: 4,
+      blur: 73,
+      opacity: 0.11,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.12, contrast: 9, vibrance: 0.11, warmth: -0.14 },
+    layers: [
+      { url: "/themes/boating/background.png", zIndex: 0 },
+      { url: "/themes/boating/foreground.png", zIndex: 2 }
+    ],
+  },
+  {
+    id: "carnival",
+    name: "Carnival",
+    collection: "Festival",
+    version: 2,
+    width: 640,
+    height: 640,
+    babyPlacement: {
+      x: 28.5,
+      y: 23.5,
+      width: 49.5,
+      height: 68.5,
+      rotation: 0,
+      anchor: "center" as const,
+    },
+    babyZIndex: 1,
+    shadow: {
+      enabled: true,
+      angle: 305,
+      distance: 3,
+      blur: 40,
+      opacity: 0.14,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.08, contrast: -8, vibrance: 0.13, warmth: 0.12 },
+    layers: [
+      { url: "/themes/carnival/background.png", zIndex: 0 },
+      { url: "/themes/carnival/foreground.png", zIndex: 2 }
+    ],
+  },
+  {
+    id: "chef",
+    name: "Chef",
+    collection: "Professions",
+    version: 2,
+    width: 640,
+    height: 640,
+    babyPlacement: {
+      x: 36.5,
+      y: 45.5,
+      width: 28.5,
+      height: 44,
+      rotation: 0,
+      anchor: "top" as const,
+    },
+    babyZIndex: 1,
+    shadow: {
+      enabled: true,
+      angle: 315,
+      distance: 6,
+      blur: 40,
+      opacity: 0.04,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.13, contrast: 13, vibrance: 0.13, warmth: -0.06 },
+    layers: [
+      { url: "/themes/chef/background.png", zIndex: 0 },
+      { url: "/themes/chef/foreground.png", zIndex: 2 }
+    ],
+  },
+  {
+    id: "dreamboat",
+    name: "DreamBoat",
+    collection: "Outdoor",
+    version: 4,
+    width: 1856,
+    height: 2304,
+    babyPlacement: {
+      x: 33,
+      y: 24.5,
+      width: 29.5,
+      height: 35,
+      rotation: 14,
+      anchor: "center" as const,
+    },
+    babyZIndex: 2,
+    shadow: {
+      enabled: true,
+      angle: 315,
+      distance: 4,
+      blur: 21,
+      opacity: 0.3,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.08, contrast: 12, vibrance: 0.11, warmth: -0.13 },
+    layers: [
+      { url: "/themes/dreamboat/background.png", zIndex: 0 },
+      { url: "/themes/dreamboat/foreground.png", zIndex: 2 }
+    ],
+  },
+  {
+    id: "floral_floor",
+    name: "Floral Floor",
+    collection: "Floral",
+    version: 2,
+    width: 640,
+    height: 640,
+    babyPlacement: {
+      x: 24,
+      y: 23,
+      width: 54.5,
+      height: 74,
+      rotation: 0,
+      anchor: "center" as const,
+    },
+    babyZIndex: 1,
+    shadow: {
+      enabled: true,
+      angle: 60,
+      distance: 12,
+      blur: 17,
+      opacity: 0.12,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.12, contrast: -8, vibrance: 0.15, warmth: 0.1 },
+    layers: [
+      { url: "/themes/floral_floor/background.png", zIndex: 0 },
+      { url: "/themes/floral_floor/foreground.png", zIndex: 2 }
+    ],
+  },
+  {
+    id: "hanuman",
+    name: "Hanuman",
+    collection: "Indian Traditional",
+    version: 6,
+    width: 5504,
+    height: 3040,
+    babyPlacement: {
+      x: 43,
+      y: 42.5,
+      width: 28.5,
+      height: 60.5,
+      rotation: 0,
+      anchor: "center" as const,
+    },
+    babyZIndex: 1,
+    shadow: {
+      enabled: true,
+      angle: 55,
+      distance: 9,
+      blur: 26,
+      opacity: 0.25,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.06, contrast: 10, vibrance: 0.11, warmth: 0.36 },
+    layers: [
+      { url: "/themes/hanuman/background.jpeg", zIndex: 0 }
+    ],
+  },
+  {
+    id: "holibucket",
+    name: "Holibucket",
+    collection: "Festival",
+    version: 2,
+    width: 2816,
+    height: 1536,
+    babyPlacement: {
+      x: 38,
+      y: 19,
+      width: 24.5,
+      height: 60,
+      rotation: 0,
+      anchor: "center" as const,
+    },
+    babyZIndex: 1,
+    shadow: {
+      enabled: false,
+      angle: 120,
+      distance: 20,
+      blur: 40,
+      opacity: 0.28,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.19, contrast: 13, vibrance: 0.24, warmth: 0.34 },
+    layers: [
+      { url: "/themes/holibucket/background.png", zIndex: 0 },
+      { url: "/themes/holibucket/foreground.png", zIndex: 2 }
+    ],
+  },
+  {
+    id: "holiground",
+    name: "Holiground",
+    collection: "Festival",
+    version: 5,
+    width: 2752,
+    height: 1536,
+    babyPlacement: {
+      x: 60,
+      y: 27,
+      width: 29,
+      height: 68.5,
+      rotation: -10,
+      anchor: "center" as const,
+    },
+    babyZIndex: 1,
+    shadow: {
+      enabled: true,
+      angle: 65,
+      distance: 6,
+      blur: 23,
+      opacity: 0.28,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.15, contrast: 7, vibrance: 0.18, warmth: 0.23 },
+    layers: [
+      { url: "/themes/holiground/background.png", zIndex: 0 }
+    ],
+  },
+  {
+    id: "jungleblanket",
+    name: "Jungleblanket",
+    collection: "Jungle",
+    version: 4,
+    width: 640,
+    height: 640,
+    babyPlacement: {
+      x: 29.5,
+      y: 40.5,
+      width: 39,
+      height: 50,
+      rotation: 0,
+      anchor: "center" as const,
+    },
+    babyZIndex: 1,
+    shadow: {
+      enabled: true,
+      angle: 120,
+      distance: 4,
+      blur: 40,
+      opacity: 0.07,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.09, contrast: 6, vibrance: 0, warmth: 0.21 },
+    layers: [
+      { url: "/themes/jungleblanket/background.png", zIndex: 0 },
+      { url: "/themes/jungleblanket/foreground.png", zIndex: 2 }
+    ],
+  },
+  {
+    id: "junglebucket",
+    name: "Junglebucket",
+    collection: "Jungle",
+    version: 3,
+    width: 640,
+    height: 640,
+    babyPlacement: {
+      x: 30,
+      y: 45,
+      width: 40.5,
+      height: 52,
+      rotation: 0,
+      anchor: "center" as const,
+    },
+    babyZIndex: 1,
+    shadow: {
+      enabled: true,
+      angle: 350,
+      distance: 5,
+      blur: 43,
+      opacity: 0.11,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.13, contrast: 7, vibrance: 0.19, warmth: 0.38 },
+    layers: [
+      { url: "/themes/junglebucket/background.png", zIndex: 0 },
+      { url: "/themes/junglebucket/foreground.png", zIndex: 2 }
+    ],
+  },
+  {
+    id: "monkey_hanging_on_a_tree",
+    name: "Monkey Hanging on a Tree",
+    collection: "Outdoor",
+    version: 5,
+    width: 2304,
+    height: 1856,
+    babyPlacement: {
+      x: 81.5,
+      y: 74.5,
+      width: 27.5,
+      height: 57,
+      rotation: 180,
+      anchor: "center" as const,
+    },
+    babyZIndex: 2,
+    shadow: {
+      enabled: true,
+      angle: 30,
+      distance: 16,
+      blur: 42,
+      opacity: 0.27,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.1, contrast: 3, vibrance: 0.07, warmth: 0.22 },
+    layers: [
+      { url: "/themes/monkey_hanging_on_a_tree/background.png", zIndex: 0 }
+    ],
+  },
+  {
+    id: "sabziwala_outdoor",
+    name: "Sabziwala Outdoor",
+    collection: "Outdoor",
+    version: 2,
+    width: 2304,
+    height: 1856,
+    babyPlacement: {
+      x: 36.5,
+      y: 36,
+      width: 24.5,
+      height: 39,
+      rotation: 0,
+      anchor: "top" as const,
+    },
+    babyZIndex: 2,
+    shadow: {
+      enabled: false,
+      angle: 120,
+      distance: 20,
+      blur: 40,
+      opacity: 0.28,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.07, contrast: -15, vibrance: 0.11, warmth: 0.5 },
+    layers: [
+      { url: "/themes/sabziwala_outdoor/background.png", zIndex: 0 },
+      { url: "/themes/sabziwala_outdoor/foreground.png", zIndex: 2 }
+    ],
+  },
+  {
+    id: "sabziwala_studio",
+    name: "Sabziwala Studio",
+    collection: "Uncategorized",
+    version: 3,
+    width: 2304,
+    height: 1856,
+    babyPlacement: {
+      x: 37.5,
+      y: 36.5,
+      width: 24,
+      height: 39.5,
+      rotation: 0,
+      anchor: "center" as const,
+    },
+    babyZIndex: 2,
+    shadow: {
+      enabled: true,
+      angle: 360,
+      distance: 50,
+      blur: 72,
+      opacity: 0.15,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.13, contrast: -6, vibrance: 0.1, warmth: 0.47 },
+    layers: [
+      { url: "/themes/sabziwala_studio/background.png", zIndex: 0 },
+      { url: "/themes/sabziwala_studio/foreground.png", zIndex: 2 }
+    ],
+  },
+  {
+    id: "seesaw",
+    name: "SeeSaw",
+    collection: "Outdoor",
+    version: 3,
+    width: 2304,
+    height: 1856,
+    babyPlacement: {
+      x: 59.5,
+      y: 22.5,
+      width: 24.5,
+      height: 46.5,
+      rotation: -48,
+      anchor: "center" as const,
+    },
+    babyZIndex: 2,
+    shadow: {
+      enabled: true,
+      angle: 80,
+      distance: 9,
+      blur: 56,
+      opacity: 0.09,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.12, contrast: 5, vibrance: 0, warmth: 0.14 },
+    layers: [
+      { url: "/themes/seesaw/background.png", zIndex: 0 }
+    ],
+  },
+  {
+    id: "tent",
+    name: "Tent",
+    collection: "Outdoor",
+    version: 3,
+    width: 640,
+    height: 640,
+    babyPlacement: {
+      x: 24.5,
+      y: 37.5,
+      width: 34.5,
+      height: 54,
+      rotation: 0,
+      anchor: "center" as const,
+    },
+    babyZIndex: 1,
+    shadow: {
+      enabled: true,
+      angle: 135,
+      distance: 4,
+      blur: 49,
+      opacity: 0.06,
+    },
+    status: "published" as const, defaultAdjust: { brightness: 0.13, contrast: -7, vibrance: 0, warmth: 0.15 },
+    layers: [
+      { url: "/themes/tent/background.png", zIndex: 0 },
+      { url: "/themes/tent/foreground.png", zIndex: 2 }
+    ],
+  }
+];
+
+export const generatedCollections = [...new Set(generatedThemes.map((t) => t.collection))];
+
+export function getGeneratedThemeById(id: string): Theme | undefined {
+  return generatedThemes.find((t) => t.id === id);
+}

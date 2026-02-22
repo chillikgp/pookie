@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <!-- Ornate frame lines -->
+  <rect x="80" y="80" width="1040" height="1440" rx="30" fill="none" stroke="#ce93d8" stroke-width="2" opacity="0.2"/>
+  <rect x="60" y="60" width="1080" height="1480" rx="40" fill="none" stroke="#ce93d8" stroke-width="1" opacity="0.1"/>
+  <!-- Gold swirl accents -->
+  <circle cx="120" cy="120" r="30" fill="none" stroke="#ffd54f" stroke-width="1" opacity="0.15"/>
+  <circle cx="1080" cy="120" r="30" fill="none" stroke="#ffd54f" stroke-width="1" opacity="0.15"/>
+</svg>
