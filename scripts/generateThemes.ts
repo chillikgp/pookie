@@ -371,7 +371,8 @@ function main() {
             `      { url: "/themes/${folder}/background${bgExt}", zIndex: 0 }`,
         ];
         if (hasFg) {
-            layers.push(`      { url: "/themes/${folder}/foreground.png", zIndex: 2 }`);
+            const fgZIndex = Math.max(2, babyZIndex + 1);
+            layers.push(`      { url: "/themes/${folder}/foreground.png", zIndex: ${fgZIndex} }`);
         }
 
         // Build theme entry

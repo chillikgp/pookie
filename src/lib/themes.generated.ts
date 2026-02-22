@@ -1,6 +1,6 @@
 // ⚠️ AUTO-GENERATED — Do not edit manually.
 // Run `npm run generate:themes` to regenerate.
-// Generated: 2026-02-22T19:02:33.847Z
+// Generated: 2026-02-22T19:36:21.964Z
 
 import { Theme } from "./theme/types";
 
@@ -59,7 +59,7 @@ export const generatedThemes: Theme[] = [
     status: "published" as const, defaultAdjust: { brightness: 0, contrast: 0, vibrance: 0, warmth: 0 },
     layers: [
       { url: "/themes/autowala/background.png", zIndex: 0 },
-      { url: "/themes/autowala/foreground.png", zIndex: 2 }
+      { url: "/themes/autowala/foreground.png", zIndex: 3 }
     ],
   },
   {
@@ -204,7 +204,7 @@ export const generatedThemes: Theme[] = [
     status: "published" as const, defaultAdjust: { brightness: 0.08, contrast: 12, vibrance: 0.11, warmth: -0.13 },
     layers: [
       { url: "/themes/dreamboat/background.png", zIndex: 0 },
-      { url: "/themes/dreamboat/foreground.png", zIndex: 2 }
+      { url: "/themes/dreamboat/foreground.png", zIndex: 3 }
     ],
   },
   {
@@ -433,7 +433,7 @@ export const generatedThemes: Theme[] = [
     status: "published" as const, defaultAdjust: { brightness: 0.07, contrast: -15, vibrance: 0.11, warmth: 0.5 },
     layers: [
       { url: "/themes/sabziwala_outdoor/background.png", zIndex: 0 },
-      { url: "/themes/sabziwala_outdoor/foreground.png", zIndex: 2 }
+      { url: "/themes/sabziwala_outdoor/foreground.png", zIndex: 3 }
     ],
   },
   {
@@ -462,7 +462,7 @@ export const generatedThemes: Theme[] = [
     status: "published" as const, defaultAdjust: { brightness: 0.13, contrast: -6, vibrance: 0.1, warmth: 0.47 },
     layers: [
       { url: "/themes/sabziwala_studio/background.png", zIndex: 0 },
-      { url: "/themes/sabziwala_studio/foreground.png", zIndex: 2 }
+      { url: "/themes/sabziwala_studio/foreground.png", zIndex: 3 }
     ],
   },
   {
