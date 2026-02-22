@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect, useState, useCallback, useMemo } from "react";
-import { Stage, Layer, Image as KonvaImage, Transformer, Circle, Line } from "react-konva";
+import { Stage, Layer, Image as KonvaImage, Transformer, Circle, Line, Group } from "react-konva";
 import Konva from "konva";
 import { useEditorStore } from "@/lib/store";
 import { calculateInitialPlacement } from "@/lib/placement";
@@ -183,12 +183,9 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
 
         ctx.drawImage(babyImage, 0, 0);
 
-        const cos = Math.cos((-babyTransform.rotation * Math.PI) / 180);
-        const sin = Math.sin((-babyTransform.rotation * Math.PI) / 180);
-
         for (const stroke of maskStrokes) {
-            const nativeBrushSize = stroke.brushSize / babyTransform.scaleX;
-            ctx.lineWidth = nativeBrushSize;
+            // stroke.brushSize is already stored in native pixel space
+            ctx.lineWidth = stroke.brushSize;
             ctx.lineCap = "round";
             ctx.lineJoin = "round";
 
@@ -197,14 +194,10 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
                 ctx.strokeStyle = "rgba(0,0,0,1)";
                 ctx.beginPath();
                 for (let i = 0; i < stroke.points.length; i += 2) {
-                    const dx = stroke.points[i] - babyTransform.x;
-                    const dy = stroke.points[i + 1] - babyTransform.y;
-                    const rx = dx * cos - dy * sin;
-                    const ry = dx * sin + dy * cos;
-                    const px = rx / babyTransform.scaleX;
-                    const py = ry / babyTransform.scaleY;
-                    if (i === 0) ctx.moveTo(px, py);
-                    else ctx.lineTo(px, py);
+                    const lx = stroke.points[i];
+                    const ly = stroke.points[i + 1];
+                    if (i === 0) ctx.moveTo(lx, ly);
+                    else ctx.lineTo(lx, ly);
                 }
                 ctx.stroke();
             } else {
@@ -212,14 +205,10 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
                 ctx.globalCompositeOperation = "source-over";
                 ctx.beginPath();
                 for (let i = 0; i < stroke.points.length; i += 2) {
-                    const dx = stroke.points[i] - babyTransform.x;
-                    const dy = stroke.points[i + 1] - babyTransform.y;
-                    const rx = dx * cos - dy * sin;
-                    const ry = dx * sin + dy * cos;
-                    const px = rx / babyTransform.scaleX;
-                    const py = ry / babyTransform.scaleY;
-                    if (i === 0) ctx.moveTo(px, py);
-                    else ctx.lineTo(px, py);
+                    const lx = stroke.points[i];
+                    const ly = stroke.points[i + 1];
+                    if (i === 0) ctx.moveTo(lx, ly);
+                    else ctx.lineTo(lx, ly);
                 }
                 ctx.clip();
                 ctx.drawImage(babyImage, 0, 0);
@@ -230,11 +219,9 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
     }, [
         maskStrokes,
         babyImage,
-        babyTransform.x,
-        babyTransform.y,
-        babyTransform.scaleX,
-        babyTransform.scaleY,
-        babyTransform.rotation,
+        // REMOVED `babyTransform` dependencies! 
+        // Masked canvas no longer regenerates when user drags or transforms the baby.
+        // This stops mobile memory exhaustion immediately.
     ]);
 
     // ─── Apply RGBA + Blur filters to shadow node ──────────────────
@@ -319,32 +306,42 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
     );
 
     const handleMaskPointerMove = useCallback(
-        (e: Konva.KonvaEventObject<MouseEvent | TouchEvent>) => {
-            const pos = e.target.getStage()?.getPointerPosition();
-            if (pos && activeTab === "mask") {
-                setCursorPos({ x: pos.x, y: pos.y });
-            }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (e: any) => {
             if (!isDrawing || activeTab !== "mask") return;
-            if (pos) {
-                setCurrentStrokePoints((prev) => [...prev, pos.x, pos.y]);
-            }
+            const pos = e.target.getStage()?.getPointerPosition();
+            if (!pos) return;
+
+            setCursorPos(pos); // Keep cursor visual strictly in stage space
+
+            // Project stroke point into NATIVE baby image space
+            const dx = pos.x - babyTransform.x;
+            const dy = pos.y - babyTransform.y;
+            const cos = Math.cos((-babyTransform.rotation * Math.PI) / 180);
+            const sin = Math.sin((-babyTransform.rotation * Math.PI) / 180);
+            const rx = dx * cos - dy * sin;
+            const ry = dx * sin + dy * cos;
+            const lx = rx / babyTransform.scaleX;
+            const ly = ry / babyTransform.scaleY;
+
+            setCurrentStrokePoints((prev) => [...prev, lx, ly]);
         },
-        [isDrawing, activeTab]
+        [isDrawing, activeTab, babyTransform]
     );
 
     const handleMaskPointerUp = useCallback(() => {
         if (!isDrawing || activeTab !== "mask") return;
         setIsDrawing(false);
         if (currentStrokePoints.length > 0) {
-            const state = useEditorStore.getState();
-            state.addMaskStroke({
+            // Save native brush size instead of stage brush size
+            addMaskStroke({
                 points: currentStrokePoints,
-                brushSize: state.maskBrushSize,
-                type: state.maskMode,
+                brushSize: maskBrushSize / babyTransform.scaleX,
+                type: maskMode,
             });
+            setCurrentStrokePoints([]);
         }
-        setCurrentStrokePoints([]);
-    }, [isDrawing, activeTab, currentStrokePoints]);
+    }, [isDrawing, activeTab, currentStrokePoints, maskMode, maskBrushSize, addMaskStroke, babyTransform.scaleX]);
 
     // ─── Render ────────────────────────────────────────────────────
     if (!theme) return null;
@@ -440,18 +437,33 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
                     })}
                 </Layer>
 
-                {/* Brush cursor (mask mode only) */}
+                {/* Brush cursor and Live Drawing (mask mode only) */}
                 {activeTab === "mask" && (
                     <Layer>
+                        {/* 
+                            Project the native local points back to screen space for the live preview line.
+                            By grouping it and applying `babyTransform`, Konva flawlessly projects the line
+                            exactly aligned with the scaled/rotated baby underneath it without having to 
+                            re-convert manually!
+                        */}
                         {isDrawing && currentStrokePoints.length > 0 && (
-                            <Line
-                                points={currentStrokePoints}
-                                stroke={maskMode === "erase" ? "rgba(255,0,0,0.5)" : "rgba(0,255,0,0.5)"}
-                                strokeWidth={maskBrushSize}
-                                lineCap="round"
-                                lineJoin="round"
-                                globalCompositeOperation={maskMode === "erase" ? "destination-out" : "source-over"}
-                            />
+                            <Group
+                                x={babyTransform.x}
+                                y={babyTransform.y}
+                                scaleX={babyTransform.scaleX}
+                                scaleY={babyTransform.scaleY}
+                                rotation={babyTransform.rotation}
+                            >
+                                <Line
+                                    points={currentStrokePoints}
+                                    stroke={maskMode === "erase" ? "rgba(255,0,0,0.5)" : "rgba(0,255,0,0.5)"}
+                                    // Scale down the strokeWidth directly so it appears visually correct on screen
+                                    strokeWidth={maskBrushSize / babyTransform.scaleX}
+                                    lineCap="round"
+                                    lineJoin="round"
+                                    globalCompositeOperation={maskMode === "erase" ? "destination-out" : "source-over"}
+                                />
+                            </Group>
                         )}
                         {cursorPos && (
                             <Circle

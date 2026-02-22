@@ -76,8 +76,8 @@ export async function renderToCanvas(config: RenderConfig): Promise<string> {
     let maskedBaby: HTMLCanvasElement | HTMLImageElement = babyImg;
     if (maskStrokes.length > 0) {
         // Pass original baby dimensions to applyMaskToImage to maintain quality
-        // but it will be drawn with upscale later
-        maskedBaby = applyMaskToImage(babyImg, maskStrokes, babyTransform, upscale);
+        // native mask strokes will composite perfectly at 1:1 scale
+        maskedBaby = applyMaskToImage(babyImg, maskStrokes);
     }
 
     const filteredBaby = applyFiltersToCanvas(maskedBaby, adjustValues);
@@ -175,25 +175,21 @@ function applyFiltersToCanvas(
  * Apply mask strokes to baby image.
  */
 function applyMaskToImage(
-    babyImg: HTMLImageElement,
-    strokes: MaskStroke[],
-    transform: BabyTransform,
-    _upscale: number
+    babyImg: HTMLImageElement | HTMLCanvasElement,
+    strokes: MaskStroke[]
 ): HTMLCanvasElement {
     const canvas = document.createElement("canvas");
-    canvas.width = babyImg.naturalWidth;
-    canvas.height = babyImg.naturalHeight;
+    const width = babyImg instanceof HTMLImageElement ? babyImg.naturalWidth : babyImg.width;
+    const height = babyImg instanceof HTMLImageElement ? babyImg.naturalHeight : babyImg.height;
+    canvas.width = width;
+    canvas.height = height;
     const ctx = canvas.getContext("2d")!;
 
     ctx.drawImage(babyImg, 0, 0);
 
-    const cos = Math.cos((-transform.rotation * Math.PI) / 180);
-    const sin = Math.sin((-transform.rotation * Math.PI) / 180);
-
     for (const stroke of strokes) {
-        // nativeBrushSize = stagePixels / scaleInStage
-        const nativeBrushSize = stroke.brushSize / transform.scaleX;
-        ctx.lineWidth = nativeBrushSize;
+        // stroke.brushSize is natively computed during drawing
+        ctx.lineWidth = stroke.brushSize;
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
 
@@ -202,14 +198,10 @@ function applyMaskToImage(
             ctx.strokeStyle = "rgba(0,0,0,1)";
             ctx.beginPath();
             for (let i = 0; i < stroke.points.length; i += 2) {
-                const dx = stroke.points[i] - transform.x;
-                const dy = stroke.points[i + 1] - transform.y;
-                const rx = dx * cos - dy * sin;
-                const ry = dx * sin + dy * cos;
-                const px = rx / transform.scaleX;
-                const py = ry / transform.scaleY;
-                if (i === 0) ctx.moveTo(px, py);
-                else ctx.lineTo(px, py);
+                const lx = stroke.points[i];
+                const ly = stroke.points[i + 1];
+                if (i === 0) ctx.moveTo(lx, ly);
+                else ctx.lineTo(lx, ly);
             }
             ctx.stroke();
         } else {
@@ -217,14 +209,10 @@ function applyMaskToImage(
             ctx.globalCompositeOperation = "source-over";
             ctx.beginPath();
             for (let i = 0; i < stroke.points.length; i += 2) {
-                const dx = stroke.points[i] - transform.x;
-                const dy = stroke.points[i + 1] - transform.y;
-                const rx = dx * cos - dy * sin;
-                const ry = dx * sin + dy * cos;
-                const px = rx / transform.scaleX;
-                const py = ry / transform.scaleY;
-                if (i === 0) ctx.moveTo(px, py);
-                else ctx.lineTo(px, py);
+                const lx = stroke.points[i];
+                const ly = stroke.points[i + 1];
+                if (i === 0) ctx.moveTo(lx, ly);
+                else ctx.lineTo(lx, ly);
             }
             ctx.clip();
             ctx.drawImage(babyImg, 0, 0);
