@@ -131,8 +131,15 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
 
         node.filters(filters);
 
-        // Cache is REQUIRED for filters to render
-        try { node.cache(); } catch { /* not yet rendered */ }
+        // Cache is REQUIRED for Konva filters to render. 
+        // ⚠️ Mobile iOS Safari crashes if caching massive 12MP images at devicePixelRatio.
+        // Cap the cache pixel ratio so the bounding box never exceeds ~1200px equivalent resolution.
+        try {
+            const maxRes = 1200;
+            const largestDim = Math.max(babyImage ? babyImage.naturalWidth : 1, babyImage ? babyImage.naturalHeight : 1);
+            const safeRatio = Math.min(1, maxRes / largestDim);
+            node.cache({ pixelRatio: safeRatio });
+        } catch { /* not yet rendered */ }
         node.getLayer()?.batchDraw();
     }, [adjustValues, babyImage, maskedBabyCanvas]);
 
@@ -167,15 +174,18 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
         node.getLayer()?.batchDraw();
     }, [adjustValues.warmth, adjustValues.brightness, adjustValues.contrast, adjustValues.vibrance, babyImage, maskedBabyCanvas]);
 
-    // ─── Build masked baby canvas ──────────────────────────────────
+    // ─── Build masked baby canvas (DISABLED FOR STABILITY) ─────────
     useEffect(() => {
         if (!babyImage) return;
-        if (maskStrokes.length === 0) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setMaskedBabyCanvas(null);
-            return;
-        }
 
+        // 🚨 EMERGENCY FIX: Disable the Mask canvas until a memory-safe alternative is built.
+        // As requested, 90% of users don't need this, and it consumes massive RAM.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setMaskedBabyCanvas(null);
+        return;
+
+
+        /* 
         const canvas = document.createElement("canvas");
         canvas.width = babyImage.naturalWidth;
         canvas.height = babyImage.naturalHeight;
@@ -216,7 +226,8 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
                 ctx.restore();
             }
         }
-        setMaskedBabyCanvas(canvas);
+        setMaskedBabyCanvas(canvas); 
+        */
     }, [
         maskStrokes,
         babyImage,
@@ -246,8 +257,13 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
         // Required for Konva filters to apply visually to a node without clipping
         node.clearCache();
         try {
+            // ⚠️ Mobile crash prevention: Never use pixelRatio=2 on large image silhouettes!
+            const maxRes = 1000;
+            const largestDim = Math.max(babyImage ? babyImage.naturalWidth : 1, babyImage ? babyImage.naturalHeight : 1);
+            const safeRatio = Math.min(1, maxRes / largestDim);
+
             node.cache({
-                pixelRatio: 2,
+                pixelRatio: safeRatio,
                 offset: Math.ceil(theme.shadow.blur)
             });
         } catch { /* not yet rendered */ }
