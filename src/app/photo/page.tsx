@@ -28,6 +28,7 @@ function PhotoContent() {
 
     // Load stored photos
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setStoredPhotos(getStoredPhotos());
     }, []);
 

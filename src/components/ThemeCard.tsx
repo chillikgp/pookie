@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Theme } from "@/lib/themes";
+import Image from "next/image";
 
 interface ThemeCardProps {
     theme: Theme;
@@ -33,12 +34,12 @@ export default function ThemeCard({ theme, onClick }: ThemeCardProps) {
                 }}
             >
                 {bgLayer && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                         src={bgLayer.url}
                         alt={theme.name}
-                        className="absolute inset-0 w-full h-full object-cover"
-                        loading="lazy"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                 )}
             </div>

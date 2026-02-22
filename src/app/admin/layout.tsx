@@ -18,6 +18,7 @@ function AdminGate({ children }: { children: React.ReactNode }) {
 
         // In development with no secret set, allow access
         if (!secret) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setAuthorized(true);
             return;
         }

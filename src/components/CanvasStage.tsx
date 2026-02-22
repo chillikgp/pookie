@@ -90,6 +90,7 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
             babyImage.naturalWidth, babyImage.naturalHeight
         );
         setBabyTransform(initial);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setPlacementDone(true);
     }, [theme, babyImage, placementDone, stageDims.width, stageDims.height, setBabyTransform]);
 
@@ -169,6 +170,7 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
     useEffect(() => {
         if (!babyImage) return;
         if (maskStrokes.length === 0) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setMaskedBabyCanvas(null);
             return;
         }
@@ -244,7 +246,6 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
         // Calculate how much the theme is scaled down to fit the preview stage.
         // Konva's Blur filter applies in *container* pixel space, so a 50px blur from the theme
         // needs to be scaled down to look proportional on a 420px phone screen.
-        const pScale = stageDims.width / theme.width;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         node.filters([Konva.Filters.RGBA as any, Konva.Filters.Blur]);
@@ -353,7 +354,6 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
     const aboveBaby = sortedLayers.filter((l) => l.zIndex > theme.babyZIndex);
 
     const shadowOffset = theme.shadow.enabled ? calculateShadowOffset(theme.shadow) : null;
-    const previewScale = stageDims.width / theme.width;
     const babyImageSource = maskedBabyCanvas || babyImage;
 
     return (

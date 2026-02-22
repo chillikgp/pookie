@@ -48,6 +48,7 @@ function ProcessingContent() {
         // Don't process if already processed
         if (processedBabyImageUrl) return;
         if (!originalBabyImageUrl) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setError("No photo selected. Please go back and choose a photo.");
             return;
         }
