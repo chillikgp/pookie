@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "generate:themes": "tsx scripts/generateThemes.ts"
+    "generate:assets": "tsx scripts/generate-theme-assets.ts",
+    "generate:themes": "npm run generate:assets && tsx scripts/generateThemes.ts"
   },
   "dependencies": {
     "konva": "^10.2.0",
@@ -16,6 +17,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-konva": "^19.2.2",
+    "sharp": "^0.34.5",
     "zustand": "^5.0.11"
   },
   "devDependencies": {
@@ -23,6 +25,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/sharp": "^0.31.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "image-size": "^2.0.2",

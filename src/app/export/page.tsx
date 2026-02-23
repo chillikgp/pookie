@@ -105,17 +105,17 @@ function ExportContent() {
             <main className="flex-grow flex flex-col items-center pb-8 fade-in">
                 {/* Preview */}
                 <div className="w-full mt-4 mb-6">
-                    <div className="card overflow-hidden">
-                        {isRendering ? (
-                            <div className="aspect-[3/4] flex flex-col items-center justify-center bg-[var(--color-surface-alt)]">
+                    <div className="card overflow-hidden relative">
+                        {isRendering && (
+                            <div className="absolute inset-0 z-50 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center text-white rounded-2xl">
                                 <div className="loading-pulse mb-4">
                                     <span className="text-4xl">🖼️</span>
                                 </div>
-                                <p className="text-sm text-[var(--color-text-muted)]">
-                                    Rendering studio quality...
-                                </p>
+                                <p className="text-sm font-medium">Preparing your high-quality image...</p>
                             </div>
-                        ) : error ? (
+                        )}
+
+                        {error ? (
                             <div className="aspect-[3/4] flex flex-col items-center justify-center bg-[var(--color-surface-alt)] p-6 text-center">
                                 <span className="text-4xl mb-4">❌</span>
                                 <p className="text-sm text-red-500">{error}</p>

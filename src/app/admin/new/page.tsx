@@ -60,16 +60,16 @@ function NewThemeContent() {
             // In production, these would upload to /public/themes/<id>/
             const bgDataUrl = await fileToDataUrl(bgFile);
             const layers: Theme["layers"] = [
-                { url: bgDataUrl, zIndex: 0 },
+                { previewUrl: bgDataUrl, exportUrl: bgDataUrl, zIndex: 0 },
             ];
 
             if (midFile) {
                 const midDataUrl = await fileToDataUrl(midFile);
-                layers.push({ url: midDataUrl, zIndex: 1 });
+                layers.push({ previewUrl: midDataUrl, exportUrl: midDataUrl, zIndex: 1 });
             }
             if (fgFile) {
                 const fgDataUrl = await fileToDataUrl(fgFile);
-                layers.push({ url: fgDataUrl, zIndex: 3 });
+                layers.push({ previewUrl: fgDataUrl, exportUrl: fgDataUrl, zIndex: 3 });
             }
 
             const newTheme: Theme = {

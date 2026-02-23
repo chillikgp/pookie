@@ -39,9 +39,9 @@ export default function AdminCanvasStage() {
                     await new Promise<void>((res, rej) => {
                         img.onload = () => res();
                         img.onerror = () => rej();
-                        img.src = layer.url;
+                        img.src = layer.previewUrl;
                     });
-                    loaded.set(layer.url, img);
+                    loaded.set(layer.previewUrl, img);
                 } catch { /* skip */ }
             }
             setLayerImages(loaded);
@@ -126,9 +126,9 @@ export default function AdminCanvasStage() {
                     {/* Background layers */}
                     <Layer>
                         {belowBaby.map((layer) => {
-                            const img = layerImages.get(layer.url);
+                            const img = layerImages.get(layer.previewUrl);
                             if (!img) return null;
-                            return <KonvaImage key={layer.url} image={img} width={stageDims.width} height={stageDims.height} />;
+                            return <KonvaImage key={layer.previewUrl} image={img} width={stageDims.width} height={stageDims.height} />;
                         })}
                     </Layer>
 
@@ -163,9 +163,9 @@ export default function AdminCanvasStage() {
                     {/* Foreground layers */}
                     <Layer>
                         {aboveBaby.map((layer) => {
-                            const img = layerImages.get(layer.url);
+                            const img = layerImages.get(layer.previewUrl);
                             if (!img) return null;
-                            return <KonvaImage key={layer.url} image={img} width={stageDims.width} height={stageDims.height} listening={false} />;
+                            return <KonvaImage key={layer.previewUrl} image={img} width={stageDims.width} height={stageDims.height} listening={false} />;
                         })}
                     </Layer>
 

@@ -13,7 +13,7 @@ export default function ThemeCard({ theme, onClick }: ThemeCardProps) {
     // Find the background layer (lowest zIndex)
     const bgLayer = [...theme.layers]
         .sort((a, b) => a.zIndex - b.zIndex)
-        .find((l) => l.url && !l.url.startsWith("idb://"));
+        .find((l) => l.previewUrl && !l.previewUrl.startsWith("idb://"));
 
     // Compute aspect ratio — cap landscape at 1:1 so cards don't look squat
     const rawAspect = theme.width && theme.height
@@ -35,7 +35,7 @@ export default function ThemeCard({ theme, onClick }: ThemeCardProps) {
             >
                 {bgLayer && (
                     <Image
-                        src={bgLayer.url}
+                        src={bgLayer.previewUrl}
                         alt={theme.name}
                         fill
                         className="object-cover"

@@ -6,6 +6,7 @@ import Konva from "konva";
 import { useEditorStore } from "@/lib/store";
 import { calculateInitialPlacement } from "@/lib/placement";
 import { calculateShadowOffset } from "@/lib/shadow";
+import { createShadowCanvas } from "@/lib/shadowCanvas";
 
 interface CanvasStageProps {
     containerWidth: number;
@@ -73,9 +74,9 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
                     return new Promise<{ url: string; img: HTMLImageElement }>((resolve, reject) => {
                         const img = new window.Image();
                         img.crossOrigin = "anonymous";
-                        img.onload = () => resolve({ url: layer.url, img });
-                        img.onerror = () => reject(new Error(`Failed to load layer: ${layer.url}`));
-                        img.src = layer.url;
+                        img.onload = () => resolve({ url: layer.previewUrl, img });
+                        img.onerror = () => reject(new Error(`Failed to load layer: ${layer.previewUrl}`));
+                        img.src = layer.previewUrl;
                     });
                 });
 
@@ -256,44 +257,41 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
         // This stops mobile memory exhaustion immediately.
     ]);
 
-    // ─── Apply RGBA + Blur filters to shadow node ──────────────────
-    // Forces shadow to be a pure black silhouette with real gaussian blur
+    // ─── Apply Blur filter to shadow node ─────────────────────────────
+    // Uses the real generated black silhouette, heavily blurred
     useEffect(() => {
         const node = shadowRef.current;
-        if (!node || !theme?.shadow.enabled) return;
+        if (!node) return;
 
-        // Calculate how much the theme is scaled down to fit the preview stage.
-        // Konva's Blur filter applies in *container* pixel space, so a 50px blur from the theme
-        // needs to be scaled down to look proportional on a 420px phone screen.
+        if (!theme?.shadow.enabled) {
+            node.clearCache();
+            return;
+        }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        node.filters([Konva.Filters.RGBA as any, Konva.Filters.Blur]);
-        node.red(0);
-        node.green(0);
-        node.blue(0);
-        node.alpha(1);
-        node.blurRadius(theme.shadow.blur);
+        const previewScale = stageDims.width / theme.width;
+        // Boost blur slightly for visual parity since preview has lower intrinsic resolution
+        const scaledBlur = theme.shadow.blur * previewScale * 1.05;
 
-        // Required for Konva filters to apply visually to a node without clipping
+        // Apply ONLY blur. Pure black is guaranteed by the physical Canvas source now.
+        node.filters([Konva.Filters.Blur]);
+        node.blurRadius(scaledBlur);
+
         node.clearCache();
         try {
             // 🚨 PHASE 3 MOBILE MEMORY OPTIMIZATION: 
             // Shadow requires caching to blur, but we MUST force pixelRatio 1.
-            // Do not upscale the shadow canvas to devicePixelRatio.
             node.cache({
                 pixelRatio: 1,
-                offset: Math.ceil(theme.shadow.blur)
+                offset: Math.ceil(scaledBlur)
             });
         } catch { /* not yet rendered */ }
 
         node.getLayer()?.batchDraw();
     }, [
-
         theme?.shadow,
-        theme?.width,
         stageDims.width,
-        maskedBabyCanvas,
-        babyImage,
+        theme?.width,
+        babyTransform // Required if transform scales affect visual boundaries, but primarily blur relies on theme.
     ]);
 
 
@@ -387,6 +385,14 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
 
     const shadowOffset = theme.shadow.enabled ? calculateShadowOffset(theme.shadow) : null;
     const babyImageSource = maskedBabyCanvas || babyImage;
+    const previewScale = theme ? stageDims.width / theme.width : 1;
+
+    // Build real black silhouette canvas for the shadow source identical to export
+    const shadowSource = useMemo(() => {
+        if (!theme.shadow.enabled || !babyImageSource) return null;
+        // Import createShadowCanvas dynamically or assume it's available. We'll add the import at the top.
+        return createShadowCanvas(babyImageSource);
+    }, [theme.shadow.enabled, babyImageSource]);
 
     // 🚨 PHASE 4 IOS OPTIMIZATION: 
     // Do not mount the Stage and allocate heavy canvas contexts until ALL images are physically decoded.
@@ -424,20 +430,20 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
                 {/* Background layers */}
                 <Layer>
                     {belowBaby.map((layer) => {
-                        const img = layerImages.get(layer.url);
+                        const img = layerImages.get(layer.previewUrl);
                         if (!img) return null;
-                        return <KonvaImage key={layer.url} image={img} width={stageDims.width} height={stageDims.height} />;
+                        return <KonvaImage key={layer.previewUrl} image={img} width={stageDims.width} height={stageDims.height} />;
                     })}
                 </Layer>
 
-                {/* Shadow — pure black silhouette with blur via RGBA + Blur filters */}
-                {shadowOffset && babyImageSource && (
+                {/* Shadow — pure black silhouette with blur via Blur filter */}
+                {shadowOffset && shadowSource && (
                     <Layer>
                         <KonvaImage
                             ref={shadowRef}
-                            image={babyImageSource}
-                            x={babyTransform.x + shadowOffset.offsetX}
-                            y={babyTransform.y + shadowOffset.offsetY}
+                            image={shadowSource}
+                            x={babyTransform.x + shadowOffset.offsetX * previewScale}
+                            y={babyTransform.y + shadowOffset.offsetY * previewScale}
                             scaleX={babyTransform.scaleX}
                             scaleY={babyTransform.scaleY}
                             rotation={babyTransform.rotation}
@@ -485,9 +491,9 @@ export default function CanvasStage({ containerWidth }: CanvasStageProps) {
                 {/* Foreground layers */}
                 <Layer>
                     {aboveBaby.map((layer) => {
-                        const img = layerImages.get(layer.url);
+                        const img = layerImages.get(layer.previewUrl);
                         if (!img) return null;
-                        return <KonvaImage key={layer.url} image={img} width={stageDims.width} height={stageDims.height} listening={false} />;
+                        return <KonvaImage key={layer.previewUrl} image={img} width={stageDims.width} height={stageDims.height} listening={false} />;
                     })}
                 </Layer>
 

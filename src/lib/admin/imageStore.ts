@@ -80,21 +80,21 @@ export async function loadLayerImage(
  */
 export async function saveThemeLayerImages(
     themeId: string,
-    layers: { url: string; zIndex: number; visible?: boolean }[]
-): Promise<{ url: string; zIndex: number; visible?: boolean }[]> {
+    layers: { previewUrl: string; exportUrl: string; zIndex: number; visible?: boolean }[]
+): Promise<{ previewUrl: string; exportUrl: string; zIndex: number; visible?: boolean }[]> {
     const resolved = [];
     for (let i = 0; i < layers.length; i++) {
         const layer = layers[i];
         // Only store data URLs in IndexedDB (external URLs are fine as-is)
-        if (layer.url.startsWith("data:")) {
-            console.log(`[imageStore] Saving layer ${i} (${layer.url.length} chars) to IndexedDB`);
-            await saveLayerImage(themeId, i, layer.url);
-            resolved.push({ ...layer, url: `idb://${themeId}__layer_${i}` });
+        if (layer.previewUrl.startsWith("data:")) {
+            console.log(`[imageStore] Saving layer ${i} (${layer.previewUrl.length} chars) to IndexedDB`);
+            await saveLayerImage(themeId, i, layer.previewUrl);
+            resolved.push({ ...layer, previewUrl: `idb://${themeId}__layer_${i}`, exportUrl: `idb://${themeId}__layer_${i}` });
         } else {
             resolved.push(layer);
         }
     }
-    console.log("[imageStore] Saved layers, placeholders:", resolved.map(l => l.url));
+    console.log("[imageStore] Saved layers, placeholders:", resolved.map(l => l.previewUrl));
     return resolved;
 }
 
@@ -102,17 +102,17 @@ export async function saveThemeLayerImages(
  * Resolve `idb://` placeholder URLs back to real data URLs from IndexedDB.
  */
 export async function resolveLayerUrls(
-    layers: { url: string; zIndex: number; visible?: boolean }[]
-): Promise<{ url: string; zIndex: number; visible?: boolean }[]> {
+    layers: { previewUrl: string; exportUrl: string; zIndex: number; visible?: boolean }[]
+): Promise<{ previewUrl: string; exportUrl: string; zIndex: number; visible?: boolean }[]> {
     const resolved = [];
     for (const layer of layers) {
-        if (layer.url.startsWith("idb://")) {
+        if (layer.previewUrl.startsWith("idb://")) {
             // Parse: idb://<themeId>__layer_<index>
-            const key = layer.url.replace("idb://", "");
+            const key = layer.previewUrl.replace("idb://", "");
             const match = key.match(/^(.+)__layer_(\d+)$/);
             if (match) {
                 const dataUrl = await loadLayerImage(match[1], parseInt(match[2]));
-                resolved.push({ ...layer, url: dataUrl || layer.url });
+                resolved.push({ ...layer, previewUrl: dataUrl || layer.previewUrl, exportUrl: dataUrl || layer.exportUrl });
             } else {
                 resolved.push(layer);
             }

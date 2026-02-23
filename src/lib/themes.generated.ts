@@ -1,6 +1,6 @@
 // ⚠️ AUTO-GENERATED — Do not edit manually.
 // Run `npm run generate:themes` to regenerate.
-// Generated: 2026-02-22T19:36:21.964Z
+// Generated: 2026-02-23T14:13:41.542Z
 
 import { Theme } from "./theme/types";
 
@@ -30,7 +30,7 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.07, contrast: 7, vibrance: 0.11, warmth: 0.36 },
     layers: [
-      { url: "/themes/airlines/background.png", zIndex: 0 }
+      { previewUrl: "/themes/airlines/" + "background.preview.jpg", exportUrl: "/themes/airlines/background.export.png", zIndex: 0 }
     ],
   },
   {
@@ -58,8 +58,8 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0, contrast: 0, vibrance: 0, warmth: 0 },
     layers: [
-      { url: "/themes/autowala/background.png", zIndex: 0 },
-      { url: "/themes/autowala/foreground.png", zIndex: 3 }
+      { previewUrl: "/themes/autowala/" + "background.preview.jpg", exportUrl: "/themes/autowala/background.export.png", zIndex: 0 },
+      { previewUrl: "/themes/autowala/foreground.preview.png", exportUrl: "/themes/autowala/foreground.export.png", zIndex: 3 }
     ],
   },
   {
@@ -87,8 +87,8 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.15, contrast: 0, vibrance: 0, warmth: -0.08 },
     layers: [
-      { url: "/themes/bathtub/background.png", zIndex: 0 },
-      { url: "/themes/bathtub/foreground.png", zIndex: 2 }
+      { previewUrl: "/themes/bathtub/" + "background.preview.jpg", exportUrl: "/themes/bathtub/background.export.png", zIndex: 0 },
+      { previewUrl: "/themes/bathtub/foreground.preview.png", exportUrl: "/themes/bathtub/foreground.export.png", zIndex: 2 }
     ],
   },
   {
@@ -116,8 +116,8 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.12, contrast: 9, vibrance: 0.11, warmth: -0.14 },
     layers: [
-      { url: "/themes/boating/background.png", zIndex: 0 },
-      { url: "/themes/boating/foreground.png", zIndex: 2 }
+      { previewUrl: "/themes/boating/" + "background.preview.jpg", exportUrl: "/themes/boating/background.export.png", zIndex: 0 },
+      { previewUrl: "/themes/boating/foreground.preview.png", exportUrl: "/themes/boating/foreground.export.png", zIndex: 2 }
     ],
   },
   {
@@ -145,8 +145,8 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.08, contrast: -8, vibrance: 0.13, warmth: 0.12 },
     layers: [
-      { url: "/themes/carnival/background.png", zIndex: 0 },
-      { url: "/themes/carnival/foreground.png", zIndex: 2 }
+      { previewUrl: "/themes/carnival/" + "background.preview.jpg", exportUrl: "/themes/carnival/background.export.png", zIndex: 0 },
+      { previewUrl: "/themes/carnival/foreground.preview.png", exportUrl: "/themes/carnival/foreground.export.png", zIndex: 2 }
     ],
   },
   {
@@ -174,8 +174,8 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.13, contrast: 13, vibrance: 0.13, warmth: -0.06 },
     layers: [
-      { url: "/themes/chef/background.png", zIndex: 0 },
-      { url: "/themes/chef/foreground.png", zIndex: 2 }
+      { previewUrl: "/themes/chef/" + "background.preview.jpg", exportUrl: "/themes/chef/background.export.png", zIndex: 0 },
+      { previewUrl: "/themes/chef/foreground.preview.png", exportUrl: "/themes/chef/foreground.export.png", zIndex: 2 }
     ],
   },
   {
@@ -203,8 +203,8 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.08, contrast: 12, vibrance: 0.11, warmth: -0.13 },
     layers: [
-      { url: "/themes/dreamboat/background.png", zIndex: 0 },
-      { url: "/themes/dreamboat/foreground.png", zIndex: 3 }
+      { previewUrl: "/themes/dreamboat/" + "background.preview.jpg", exportUrl: "/themes/dreamboat/background.export.png", zIndex: 0 },
+      { previewUrl: "/themes/dreamboat/foreground.preview.png", exportUrl: "/themes/dreamboat/foreground.export.png", zIndex: 3 }
     ],
   },
   {
@@ -232,8 +232,8 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.12, contrast: -8, vibrance: 0.15, warmth: 0.1 },
     layers: [
-      { url: "/themes/floral_floor/background.png", zIndex: 0 },
-      { url: "/themes/floral_floor/foreground.png", zIndex: 2 }
+      { previewUrl: "/themes/floral_floor/" + "background.preview.jpg", exportUrl: "/themes/floral_floor/background.export.png", zIndex: 0 },
+      { previewUrl: "/themes/floral_floor/foreground.preview.png", exportUrl: "/themes/floral_floor/foreground.export.png", zIndex: 2 }
     ],
   },
   {
@@ -261,7 +261,7 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.06, contrast: 10, vibrance: 0.11, warmth: 0.36 },
     layers: [
-      { url: "/themes/hanuman/background.jpeg", zIndex: 0 }
+      { previewUrl: "/themes/hanuman/" + "background.preview.jpg", exportUrl: "/themes/hanuman/background.export.png", zIndex: 0 }
     ],
   },
   {
@@ -289,8 +289,8 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.19, contrast: 13, vibrance: 0.24, warmth: 0.34 },
     layers: [
-      { url: "/themes/holibucket/background.png", zIndex: 0 },
-      { url: "/themes/holibucket/foreground.png", zIndex: 2 }
+      { previewUrl: "/themes/holibucket/" + "background.preview.jpg", exportUrl: "/themes/holibucket/background.export.png", zIndex: 0 },
+      { previewUrl: "/themes/holibucket/foreground.preview.png", exportUrl: "/themes/holibucket/foreground.export.png", zIndex: 2 }
     ],
   },
   {
@@ -318,7 +318,7 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.15, contrast: 7, vibrance: 0.18, warmth: 0.23 },
     layers: [
-      { url: "/themes/holiground/background.png", zIndex: 0 }
+      { previewUrl: "/themes/holiground/" + "background.preview.jpg", exportUrl: "/themes/holiground/background.export.png", zIndex: 0 }
     ],
   },
   {
@@ -346,8 +346,8 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.09, contrast: 6, vibrance: 0, warmth: 0.21 },
     layers: [
-      { url: "/themes/jungleblanket/background.png", zIndex: 0 },
-      { url: "/themes/jungleblanket/foreground.png", zIndex: 2 }
+      { previewUrl: "/themes/jungleblanket/" + "background.preview.jpg", exportUrl: "/themes/jungleblanket/background.export.png", zIndex: 0 },
+      { previewUrl: "/themes/jungleblanket/foreground.preview.png", exportUrl: "/themes/jungleblanket/foreground.export.png", zIndex: 2 }
     ],
   },
   {
@@ -375,8 +375,8 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.13, contrast: 7, vibrance: 0.19, warmth: 0.38 },
     layers: [
-      { url: "/themes/junglebucket/background.png", zIndex: 0 },
-      { url: "/themes/junglebucket/foreground.png", zIndex: 2 }
+      { previewUrl: "/themes/junglebucket/" + "background.preview.jpg", exportUrl: "/themes/junglebucket/background.export.png", zIndex: 0 },
+      { previewUrl: "/themes/junglebucket/foreground.preview.png", exportUrl: "/themes/junglebucket/foreground.export.png", zIndex: 2 }
     ],
   },
   {
@@ -404,7 +404,7 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.1, contrast: 3, vibrance: 0.07, warmth: 0.22 },
     layers: [
-      { url: "/themes/monkey_hanging_on_a_tree/background.png", zIndex: 0 }
+      { previewUrl: "/themes/monkey_hanging_on_a_tree/" + "background.preview.jpg", exportUrl: "/themes/monkey_hanging_on_a_tree/background.export.png", zIndex: 0 }
     ],
   },
   {
@@ -432,8 +432,8 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.07, contrast: -15, vibrance: 0.11, warmth: 0.5 },
     layers: [
-      { url: "/themes/sabziwala_outdoor/background.png", zIndex: 0 },
-      { url: "/themes/sabziwala_outdoor/foreground.png", zIndex: 3 }
+      { previewUrl: "/themes/sabziwala_outdoor/" + "background.preview.jpg", exportUrl: "/themes/sabziwala_outdoor/background.export.png", zIndex: 0 },
+      { previewUrl: "/themes/sabziwala_outdoor/foreground.preview.png", exportUrl: "/themes/sabziwala_outdoor/foreground.export.png", zIndex: 3 }
     ],
   },
   {
@@ -461,8 +461,8 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.13, contrast: -6, vibrance: 0.1, warmth: 0.47 },
     layers: [
-      { url: "/themes/sabziwala_studio/background.png", zIndex: 0 },
-      { url: "/themes/sabziwala_studio/foreground.png", zIndex: 3 }
+      { previewUrl: "/themes/sabziwala_studio/" + "background.preview.jpg", exportUrl: "/themes/sabziwala_studio/background.export.png", zIndex: 0 },
+      { previewUrl: "/themes/sabziwala_studio/foreground.preview.png", exportUrl: "/themes/sabziwala_studio/foreground.export.png", zIndex: 3 }
     ],
   },
   {
@@ -490,7 +490,7 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.12, contrast: 5, vibrance: 0, warmth: 0.14 },
     layers: [
-      { url: "/themes/seesaw/background.png", zIndex: 0 }
+      { previewUrl: "/themes/seesaw/" + "background.preview.jpg", exportUrl: "/themes/seesaw/background.export.png", zIndex: 0 }
     ],
   },
   {
@@ -518,8 +518,8 @@ export const generatedThemes: Theme[] = [
     },
     status: "published" as const, defaultAdjust: { brightness: 0.13, contrast: -7, vibrance: 0, warmth: 0.15 },
     layers: [
-      { url: "/themes/tent/background.png", zIndex: 0 },
-      { url: "/themes/tent/foreground.png", zIndex: 2 }
+      { previewUrl: "/themes/tent/" + "background.preview.jpg", exportUrl: "/themes/tent/background.export.png", zIndex: 0 },
+      { previewUrl: "/themes/tent/foreground.preview.png", exportUrl: "/themes/tent/foreground.export.png", zIndex: 2 }
     ],
   }
 ];

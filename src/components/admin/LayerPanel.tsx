@@ -27,16 +27,16 @@ export default function LayerPanel() {
 
     const toggleVisibility = (url: string) => {
         const updated = theme.layers.map((l) =>
-            l.url === url ? { ...l, visible: l.visible === false ? true : false } : l
+            l.previewUrl === url ? { ...l, visible: l.visible === false ? true : false } : l
         );
         updateLayers(updated);
     };
 
     const moveLayerUp = (url: string) => {
-        const layer = theme.layers.find((l) => l.url === url);
+        const layer = theme.layers.find((l) => l.previewUrl === url);
         if (!layer || layer.zIndex === 0) return; // Can't move background
         const updated = theme.layers.map((l) => {
-            if (l.url === url) return { ...l, zIndex: l.zIndex + 1 };
+            if (l.previewUrl === url) return { ...l, zIndex: l.zIndex + 1 };
             if (l.zIndex === layer.zIndex + 1) return { ...l, zIndex: l.zIndex - 1 };
             return l;
         });
@@ -44,10 +44,10 @@ export default function LayerPanel() {
     };
 
     const moveLayerDown = (url: string) => {
-        const layer = theme.layers.find((l) => l.url === url);
+        const layer = theme.layers.find((l) => l.previewUrl === url);
         if (!layer || layer.zIndex <= 1) return; // Can't go below 1 (background is 0)
         const updated = theme.layers.map((l) => {
-            if (l.url === url) return { ...l, zIndex: l.zIndex - 1 };
+            if (l.previewUrl === url) return { ...l, zIndex: l.zIndex - 1 };
             if (l.zIndex === layer.zIndex - 1 && l.zIndex > 0) return { ...l, zIndex: l.zIndex + 1 };
             return l;
         });
@@ -60,10 +60,10 @@ export default function LayerPanel() {
     for (const l of sortedLayers) {
         displayItems.push({
             type: "layer",
-            url: l.url,
+            url: l.previewUrl,
             zIndex: l.zIndex,
             visible: l.visible !== false,
-            label: layerLabel(l.url, l.zIndex),
+            label: layerLabel(l.previewUrl, l.zIndex),
         });
     }
     displayItems.push({
@@ -85,8 +85,8 @@ export default function LayerPanel() {
                         <div
                             key={item.url || "baby"}
                             className={`flex items-center gap-2 px-3 py-2.5 rounded-lg border transition-all ${item.type === "baby"
-                                    ? "bg-[#ee652b]/10 border-[#ee652b]/20"
-                                    : "bg-[#1a1a24] border-[#2a2a3a]"
+                                ? "bg-[#ee652b]/10 border-[#ee652b]/20"
+                                : "bg-[#1a1a24] border-[#2a2a3a]"
                                 }`}
                         >
                             {/* Label */}

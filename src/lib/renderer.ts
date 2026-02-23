@@ -55,6 +55,9 @@ export async function renderToCanvas(config: RenderConfig): Promise<string> {
     canvas.height = outHeight;
     const ctx = canvas.getContext("2d")!;
 
+    // Prevent iOS Safari heavy UI thread freezing by yielding before big render loop
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
     // 🧠 Color Space Safety & Quality
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
@@ -66,7 +69,8 @@ export async function renderToCanvas(config: RenderConfig): Promise<string> {
 
     // ─── Step 1: Draw background layers ─────────────────────────────
     for (const layer of belowBaby) {
-        const img = await loadImage(layer.url);
+        const urlToLoad = mode === "export" ? layer.exportUrl : layer.previewUrl;
+        const img = await loadImage(urlToLoad);
         ctx.drawImage(img, 0, 0, outWidth, outHeight);
     }
 
@@ -87,37 +91,50 @@ export async function renderToCanvas(config: RenderConfig): Promise<string> {
     // ─── Step 3: Draw shadow (black silhouette of filtered+masked baby) ─
     if (theme.shadow.enabled) {
         const shadowOffset = calculateShadowOffset(theme.shadow);
-
-        // 🚨 PHASE 3 MOBILE MEMORY OPTIMIZATION:
-        // As explicitly requested, use only upscale for blur and offset. Do not use scaleFactor.
-        const scaledBlur = theme.shadow.blur * upscale;
-        const scaledOffsetX = shadowOffset.offsetX * upscale;
-        const scaledOffsetY = shadowOffset.offsetY * upscale;
-
         const shadowSilhouette = createShadowCanvas(filteredBaby);
+
+        // Explicit scaling rule from user
+        const exportScale = outWidth / theme.width;
+        const scaledOffsetX = shadowOffset.offsetX * exportScale;
+        const scaledOffsetY = shadowOffset.offsetY * exportScale;
+        const scaledBlur = theme.shadow.blur * exportScale;
+
+        // Pre-blur shadow trick to bypass Safari clipping & "glow bounding box" bug
+        // Calculate the blur requirement in *native baby image* pixel space before transform scaling
+        const baseScale = babyTransform.scaleX * upscale;
+        const nativeBlur = scaledBlur / baseScale;
+        const padding = Math.ceil(nativeBlur * 2);
+
+        const blurCanvas = document.createElement("canvas");
+        blurCanvas.width = shadowSilhouette.width + padding * 2;
+        blurCanvas.height = shadowSilhouette.height + padding * 2;
+        const blurCtx = blurCanvas.getContext("2d")!;
+
+        blurCtx.shadowColor = "black";
+        blurCtx.shadowBlur = nativeBlur;
+        // Draw the pure black silhouette way offscreen so only its soft drop shadow renders into the temp canvas
+        blurCtx.shadowOffsetX = 10000;
+        blurCtx.drawImage(shadowSilhouette, padding - 10000, padding);
 
         ctx.save();
         ctx.globalAlpha = theme.shadow.opacity;
-        ctx.filter = `blur(${scaledBlur}px)`;
 
         ctx.translate(
             babyTransform.x * upscale + scaledOffsetX,
             babyTransform.y * upscale + scaledOffsetY
         );
+
         ctx.rotate((babyTransform.rotation * Math.PI) / 180);
+
         ctx.scale(
             babyTransform.scaleX * upscale,
             babyTransform.scaleY * upscale
         );
 
-        ctx.drawImage(shadowSilhouette, 0, 0);
+        // Draw the isolated soft shadow, countering the padding we injected
+        ctx.drawImage(blurCanvas, -padding, -padding);
 
         ctx.restore();
-
-        // 6️⃣ Reset Canvas Filters Properly
-        ctx.filter = "none";
-        ctx.globalAlpha = 1;
-        ctx.globalCompositeOperation = "source-over";
     }
 
     // ─── Step 4: Draw filtered baby ─────────────────────────────────
@@ -131,7 +148,8 @@ export async function renderToCanvas(config: RenderConfig): Promise<string> {
 
     // ─── Step 5: Foreground layers ──────────────────────────────────
     for (const layer of aboveBaby) {
-        const img = await loadImage(layer.url);
+        const urlToLoad = mode === "export" ? layer.exportUrl : layer.previewUrl;
+        const img = await loadImage(urlToLoad);
         ctx.drawImage(img, 0, 0, outWidth, outHeight);
     }
 

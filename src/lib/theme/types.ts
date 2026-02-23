@@ -46,7 +46,8 @@ export interface ThemeDefaultAdjust {
 }
 
 export interface ThemeLayer {
-    url: string;
+    previewUrl: string;
+    exportUrl: string;
     zIndex: number;
     visible?: boolean;
 }

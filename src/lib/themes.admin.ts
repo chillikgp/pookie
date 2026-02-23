@@ -134,18 +134,29 @@ export async function mergeWithOverrides(
     // Resolve all idb:// layer URLs from IndexedDB
     const resolved = await Promise.all(
         merged.map(async (theme) => {
-            const hasIdbUrls = theme.layers.some((l) => l.url.startsWith("idb://"));
+            // Defensive check: ensure all layers have previewUrl/exportUrl (legacy storage migration)
+            theme.layers = theme.layers.map((l: any) => ({
+                ...l,
+                previewUrl: l.previewUrl || l.url || "",
+                exportUrl: l.exportUrl || l.url || "",
+            }));
+
+            const hasIdbUrls = theme.layers.some((l) => l.previewUrl?.startsWith("idb://"));
             if (hasIdbUrls) {
                 const fallbackLayers = generatedLayerMap.get(theme.id);
                 const resolvedLayers = await resolveLayerUrls(theme.layers);
                 // If any idb:// URL couldn't be resolved, fall back to generated layer URL
                 const finalLayers = resolvedLayers.map((layer, i) => {
-                    if (layer.url.startsWith("idb://") && fallbackLayers?.[i]) {
-                        return { ...layer, url: fallbackLayers[i].url };
+                    if (layer.previewUrl?.startsWith("idb://") && fallbackLayers?.[i]) {
+                        return {
+                            ...layer,
+                            previewUrl: fallbackLayers[i].previewUrl,
+                            exportUrl: fallbackLayers[i].exportUrl
+                        };
                     }
                     return layer;
                 });
-                return { ...theme, layers: finalLayers };
+                return { ...theme, layers: finalLayers } as Theme;
             }
             return theme;
         })

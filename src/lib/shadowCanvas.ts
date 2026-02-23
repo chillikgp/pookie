@@ -26,5 +26,7 @@ export function createShadowCanvas(
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, w, h);
 
+    ctx.globalCompositeOperation = "source-over";
+
     return canvas;
 }

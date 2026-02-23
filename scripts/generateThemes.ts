@@ -367,12 +367,35 @@ function main() {
         );
 
         // Build layers array
+        const bgPreview = fs.existsSync(path.join(themeDir, "background.preview.jpg"))
+            ? `"background.preview.jpg"`
+            : `"background.preview.png"`; // fallback if they somehow generated a png preview
+
+        // Check if previews/exports exist, fallback to original if missing
+        const bgExportPath = fs.existsSync(path.join(themeDir, "background.export.png"))
+            ? `"/themes/${folder}/background.export.png"`
+            : `"/themes/${folder}/background${bgExt}"`;
+
+        const bgPreviewPath = fs.existsSync(path.join(themeDir, "background.preview.jpg")) || fs.existsSync(path.join(themeDir, "background.preview.png"))
+            ? `"/themes/${folder}/" + ${bgPreview}`
+            : bgExportPath; // fallback
+
         const layers: string[] = [
-            `      { url: "/themes/${folder}/background${bgExt}", zIndex: 0 }`,
+            `      { previewUrl: ${bgPreviewPath}, exportUrl: ${bgExportPath}, zIndex: 0 }`,
         ];
+
         if (hasFg) {
             const fgZIndex = Math.max(2, babyZIndex + 1);
-            layers.push(`      { url: "/themes/${folder}/foreground.png", zIndex: ${fgZIndex} }`);
+
+            const fgExportPath = fs.existsSync(path.join(themeDir, "foreground.export.png"))
+                ? `"/themes/${folder}/foreground.export.png"`
+                : `"/themes/${folder}/foreground.png"`;
+
+            const fgPreviewPath = fs.existsSync(path.join(themeDir, "foreground.preview.png"))
+                ? `"/themes/${folder}/foreground.preview.png"`
+                : fgExportPath; // fallback
+
+            layers.push(`      { previewUrl: ${fgPreviewPath}, exportUrl: ${fgExportPath}, zIndex: ${fgZIndex} }`);
         }
 
         // Build theme entry

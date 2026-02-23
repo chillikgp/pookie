@@ -34,8 +34,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 if (!override.layers) return override;
                 const layers = await Promise.all(
                     override.layers.map(async (layer) => {
-                        if (layer.url.startsWith("idb://")) {
-                            const key = layer.url.replace("idb://", "");
+                        if (layer.previewUrl.startsWith("idb://")) {
+                            const key = layer.previewUrl.replace("idb://", "");
                             const match = key.match(/^(.+)__layer_(\d+)$/);
                             if (match) {
                                 const { loadLayerImage } = await import("@/lib/admin/imageStore");
